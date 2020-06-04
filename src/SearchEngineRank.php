@@ -23,7 +23,7 @@ class SearchEngineRank
     public static function getRank($searchEngineType, $keyWord, $currentPage = 1, $proxy = '', $searchUrl = '', $timeout = 5)
     {
         try {
-            $searchUrl = MatchUrlAndGetRank::verifyUrl($searchUrl);
+            MatchUrlAndGetRank::verifyUrl($searchUrl,$searchEngineType);
             if (!key_exists($searchEngineType, SearchEngineEnum::ENGINE_URL)) {
                 throw new InvalidArgumentException('搜索引擎类型有误');
             }
@@ -41,6 +41,7 @@ class SearchEngineRank
                     $m = false;
                     break;
             }
+            var_dump($url);exit();
             if (!empty($url)) {
                 $ql = QueryList::get($url, null,
                     [
@@ -69,7 +70,13 @@ class SearchEngineRank
                         if (strstr($html, '百度安全验证') || strstr($html, 'location.replace(location.href.replace("https://","http://")')) {
                             throw new SearchEngineErrorException('碰到百度安全验证，请更换代理后，再重试！');
                         }
-                        $rank = MatchUrlAndGetRank::getMBaiDuRank($html, $searchUrl, $currentPage, $proxy);
+                        $rank = MatchUrlAndGetRank::getMBaiDuRank($html, $searchUrl, $currentPage);
+                    }
+                    if ($searchEngineType == SearchEngineEnum::PC_360) {
+                        if (strstr($html, '360搜索_访问异常出错')) {
+                            throw new SearchEngineErrorException('碰到360安全验证，请更换代理后，再重试！');
+                        }
+                        $rank = MatchUrlAndGetRank::getPc360Rank($html, $searchUrl, $currentPage, $proxy);
                     }
                     return $rank;
                 }
