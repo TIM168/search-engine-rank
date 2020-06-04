@@ -45,6 +45,20 @@ class MatchUrlAndGetRank
 
     }
 
+    public static function getPc360Url($keyWord, $page)
+    {
+
+        $url = SearchEngineEnum::ENGINE_URL[SearchEngineEnum::PC_360];
+        $data = [
+            'q' => $keyWord,
+            'ie' => 'utf-8',
+            'pn' => $page
+        ];
+        $url = "$url?" . http_build_query($data);
+        return $url;
+
+    }
+
     /**
      * @param $html
      * @param $url
@@ -128,20 +142,18 @@ class MatchUrlAndGetRank
         return $ranks;
     }
 
-
     public static function getPc360Rank($html, $url, $page)
     {
         $ranks = [];
         $crawler = new Crawler();
         $crawler->addHtmlContent($html);
-        var_dump($url);
-        $query = '//*[@id="results"]/div';
+        $query = '//*[@class="result"]/li';
         $num = $crawler->filterXPath($query)->count();
         $i = 1;
         if (!empty($num) && $num > 1) {
             while ($i <= $num) {
                 try {
-                    $snap_shoot = '//*[@id="results"]//*[@order=' . '"' . $i . '"' . ']//@data-log';
+                    $snap_shoot = '//*[@class="result"]/li[' . $i . ']';
                     $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
                 } catch (\Exception $e) {
                     break;
@@ -209,7 +221,7 @@ class MatchUrlAndGetRank
             case SearchEngineEnum::PC_BAI_DU:
                 $preg = "/^http(s)?:\\/\\/.+/";
                 if (preg_match($preg, $url)) {
-                    return true;
+                    return $url;
                 } else {
                     throw new InvalidArgumentException('链接缺少http://或https://');
                 }
@@ -217,13 +229,18 @@ class MatchUrlAndGetRank
             case SearchEngineEnum::M_BAI_DU:
                 $preg = "/^http(s)?:\\/\\/.+/";
                 if (preg_match($preg, $url)) {
-                    return true;
+                    return $url;
                 } else {
                     throw new InvalidArgumentException('链接缺少http://或https://');
                 }
                 break;
             case SearchEngineEnum::PC_360:
-                return true;
+                $urls = explode('://', $url);
+                if (!empty($urls)) {
+                    return $urls[1];
+                } else {
+                    return $url;
+                }
                 break;
 
         }
