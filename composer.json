@@ -1,0 +1,20 @@
+{
+    "name": "tim168\/search-engine-rank",
+    "description": "Package description here.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TIM168",
+            "email": "784699571@qq.com"
+        }
+    ],
+    "require": {
+        "symfony/dom-crawler": "^5.1",
+        "jaeger/querylist": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tim168\\SearchEngineRank\\": "./src/"
+        }
+    }
+}
