@@ -31,6 +31,11 @@ class MatchUrlAndGetRank
 
     }
 
+    /**
+     * @param $keyWord
+     * @param $page
+     * @return string
+     */
     public static function getMBaiDuUrl($keyWord, $page)
     {
 
@@ -45,6 +50,11 @@ class MatchUrlAndGetRank
 
     }
 
+    /**
+     * @param $keyWord
+     * @param $page
+     * @return string
+     */
     public static function getPc360Url($keyWord, $page)
     {
 
@@ -56,7 +66,24 @@ class MatchUrlAndGetRank
         ];
         $url = "$url?" . http_build_query($data);
         return $url;
+    }
 
+    /**
+     * @param $keyWord
+     * @param $page
+     * @return string
+     */
+    public static function getPcSouGouUrl($keyWord, $page)
+    {
+
+        $url = SearchEngineEnum::ENGINE_URL[SearchEngineEnum::PC_SOU_GOU];
+        $data = [
+            'query' => $keyWord,
+            'ie' => 'utf-8',
+            'pn' => $page
+        ];
+        $url = "$url?" . http_build_query($data);
+        return $url;
     }
 
     /**
@@ -142,6 +169,12 @@ class MatchUrlAndGetRank
         return $ranks;
     }
 
+    /**
+     * @param $html
+     * @param $url
+     * @param $page
+     * @return array
+     */
     public static function getPc360Rank($html, $url, $page)
     {
         $ranks = [];
@@ -169,6 +202,37 @@ class MatchUrlAndGetRank
 
         return $ranks;
     }
+
+    public static function getPcSouGouRank($html, $url, $page)
+    {
+        $ranks = [];
+        $crawler = new Crawler();
+        $crawler->addHtmlContent($html);
+        var_dump($html);
+        exit();
+        $query = '//*[@class="result"]/li';
+        $num = $crawler->filterXPath($query)->count();
+        $i = 1;
+        if (!empty($num) && $num > 1) {
+            while ($i <= $num) {
+                try {
+                    $snap_shoot = '//*[@class="result"]/li[' . $i . ']';
+                    $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
+                } catch (\Exception $e) {
+                    break;
+                }
+                if (!empty($snap_shootUrl)) {
+                    if (strstr($snap_shootUrl, $url)) {
+                        array_unshift($ranks, ($page - 1) * 10 + $i);
+                    }
+                }
+                $i++;
+            }
+        }
+
+        return $ranks;
+    }
+
 
     /**
      * @param $url

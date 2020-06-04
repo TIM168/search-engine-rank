@@ -40,11 +40,16 @@ class SearchEngineRank
                     $url = MatchUrlAndGetRank::getPc360Url($keyWord, $currentPage);
                     $m = false;
                     break;
+                case SearchEngineEnum::PC_SOU_GOU:
+                    $url = MatchUrlAndGetRank::getPcSouGouUrl($keyWord, $currentPage);
+                    $m = false;
+                    break;
                 default:
                     $url = '';
                     $m = false;
                     break;
             }
+            var_dump($url);exit();
             if (!empty($url)) {
                 $ql = QueryList::get($url, null,
                     [
@@ -61,7 +66,6 @@ class SearchEngineRank
                         ]
                     ]);
                 $html = $ql->getHtml();
-//                var_dump($html);
                 if (!empty($html)) {
                     if ($searchEngineType == SearchEngineEnum::PC_BAI_DU) {
                         if (strstr($html, '百度安全验证') || strstr($html, 'location.replace(location.href.replace("https://","http://")')) {
@@ -80,6 +84,12 @@ class SearchEngineRank
                             throw new SearchEngineErrorException('碰到360安全验证，请更换代理后，再重试！');
                         }
                         $rank = MatchUrlAndGetRank::getPc360Rank($html, $searchUrl, $currentPage);
+                    }
+                    if ($searchEngineType == SearchEngineEnum::PC_SOU_GOU) {
+                        if (strstr($html, '我们的系统检测到您网络中存在异常访问请求')) {
+                            throw new SearchEngineErrorException('碰到360安全验证，请更换代理后，再重试！');
+                        }
+                        $rank = MatchUrlAndGetRank::getPcSouGouRank($html, $searchUrl, $currentPage);
                     }
                     return $rank;
                 }
