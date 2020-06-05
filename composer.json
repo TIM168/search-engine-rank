@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "php": ">=7.2",
         "symfony/dom-crawler": "^5.1",
         "jaeger/querylist": "^4.2",
         "phpunit/phpunit": "^8.5"
