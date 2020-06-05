@@ -49,7 +49,6 @@ class SearchEngineRank
                     $m = false;
                     break;
             }
-            var_dump($url);exit();
             if (!empty($url)) {
                 $ql = QueryList::get($url, null,
                     [

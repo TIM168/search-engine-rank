@@ -14,8 +14,6 @@ class SearchEngineEnum
 
     const PC_SOU_GOU = 'pc-sou-gou';
 
-//    const M_SOU_GOU = 'm-sou-gou';
-
     const M_SHEN_MA = 'm-shen-ma';
 
     const M_TOU_TIAO = 'm-tou-tiao';
@@ -24,7 +22,6 @@ class SearchEngineEnum
         self::PC_BAI_DU => 'https://www.baidu.com/s',
         self::M_BAI_DU => 'https://m.baidu.com/s',
         self::PC_SOU_GOU => 'https://www.sogou.com/web',
-//        self::M_SOU_GOU => '',
         self::PC_360 => 'https://www.so.com/s',
         self::M_360 => 'https://m.so.com/s',
         self::M_SHEN_MA => 'https://m.sm.cn/s',

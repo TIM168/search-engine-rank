@@ -106,16 +106,13 @@ class MatchUrlAndGetRank
                 try {
                     $snap_shoot = '//*[@id="content_left"]//*[@id=' . '"' . $i . '"' . ']//a[@data-click="{\'rsv_snapshot\':\'1\'}"]//@href';
                     $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
-                } catch (\Exception $e) {
-                    break;
-                }
-                if (!empty($snap_shootUrl)) {
-                    $snap_shootHtml = self::getUrl($snap_shootUrl, SearchEngineEnum::PC_BAI_DU, $proxy);
-                    if (!empty($snap_shootHtml)) {
-                        $query1 = '//*[@id="bd_snap_note"]/a';
-                        $crawler1 = new Crawler();
-                        $crawler1->addHtmlContent($snap_shootHtml);
-                        try {
+                    if (!empty($snap_shootUrl)) {
+                        $snap_shootHtml = self::getUrl($snap_shootUrl, SearchEngineEnum::PC_BAI_DU, $proxy);
+                        if (!empty($snap_shootHtml)) {
+                            $query1 = '//*[@id="bd_snap_note"]/a';
+                            $crawler1 = new Crawler();
+                            $crawler1->addHtmlContent($snap_shootHtml);
+
                             $match = $crawler1->filterXPath($query1)->text();
                             if (!empty($match)) {
                                 $match = self::verifyUrlLastStr($match);
@@ -123,10 +120,9 @@ class MatchUrlAndGetRank
                                     array_unshift($ranks, ($page - 1) * 10 + $i);
                                 }
                             }
-                        } catch (\Exception $e) {
-                            break;
                         }
                     }
+                } catch (\Exception $e) {
                 }
                 $i++;
             }
@@ -154,13 +150,13 @@ class MatchUrlAndGetRank
                 try {
                     $snap_shoot = '//*[@id="results"]//*[@order=' . '"' . $i . '"' . ']//@data-log';
                     $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
-                } catch (\Exception $e) {
-                    break;
-                }
-                if (!empty($snap_shootUrl)) {
-                    if (strstr($snap_shootUrl, $url)) {
-                        array_unshift($ranks, ($page - 1) * 10 + $i);
+
+                    if (!empty($snap_shootUrl)) {
+                        if (strstr($snap_shootUrl, $url)) {
+                            array_unshift($ranks, ($page - 1) * 10 + $i);
+                        }
                     }
+                } catch (\Exception $e) {
                 }
                 $i++;
             }
@@ -188,13 +184,14 @@ class MatchUrlAndGetRank
                 try {
                     $snap_shoot = '//*[@class="result"]/li[' . $i . ']';
                     $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
-                } catch (\Exception $e) {
-                    break;
-                }
-                if (!empty($snap_shootUrl)) {
-                    if (strstr($snap_shootUrl, $url)) {
-                        array_unshift($ranks, ($page - 1) * 10 + $i);
+
+                    if (!empty($snap_shootUrl)) {
+                        if (strstr($snap_shootUrl, $url)) {
+                            array_unshift($ranks, ($page - 1) * 10 + $i);
+                        }
                     }
+
+                } catch (\Exception $e) {
                 }
                 $i++;
             }
@@ -208,31 +205,29 @@ class MatchUrlAndGetRank
         $ranks = [];
         $crawler = new Crawler();
         $crawler->addHtmlContent($html);
-        var_dump($html);
-        exit();
-        $query = '//*[@class="result"]/li';
+        $query = '//*[@class="results"]/div';
         $num = $crawler->filterXPath($query)->count();
         $i = 1;
         if (!empty($num) && $num > 1) {
             while ($i <= $num) {
                 try {
-                    $snap_shoot = '//*[@class="result"]/li[' . $i . ']';
+                    $snap_shoot = '//*[@class="results"]/div[' . $i . ']//*[@class="fb"]//@href';
                     $snap_shootUrl = $crawler->filterXPath($snap_shoot)->text();
-                } catch (\Exception $e) {
-                    break;
-                }
-                if (!empty($snap_shootUrl)) {
-                    if (strstr($snap_shootUrl, $url)) {
-                        array_unshift($ranks, ($page - 1) * 10 + $i);
+                    if (!empty($snap_shootUrl)) {
+                        $snap_shootUrl = (urldecode($snap_shootUrl));
+                        if (strstr($snap_shootUrl, $url)) {
+                            array_unshift($ranks, ($page - 1) * 10 + $i);
+                        }
                     }
+                } catch (\Exception $e) {
                 }
                 $i++;
             }
+
         }
 
         return $ranks;
     }
-
 
     /**
      * @param $url
@@ -275,6 +270,12 @@ class MatchUrlAndGetRank
         }
     }
 
+    /**
+     * @param $url
+     * @param $searchEngineType
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
     public static function verifyUrl($url, $searchEngineType)
     {
         $pregUrl = "/^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/";
@@ -284,31 +285,25 @@ class MatchUrlAndGetRank
         switch ($searchEngineType) {
             case SearchEngineEnum::PC_BAI_DU:
                 $preg = "/^http(s)?:\\/\\/.+/";
-                if (preg_match($preg, $url)) {
-                    return $url;
-                } else {
+                if (!preg_match($preg, $url)) {
                     throw new InvalidArgumentException('链接缺少http://或https://');
                 }
                 break;
             case SearchEngineEnum::M_BAI_DU:
                 $preg = "/^http(s)?:\\/\\/.+/";
-                if (preg_match($preg, $url)) {
-                    return $url;
-                } else {
+                if (!preg_match($preg, $url)) {
                     throw new InvalidArgumentException('链接缺少http://或https://');
                 }
                 break;
             case SearchEngineEnum::PC_360:
-                $urls = explode('://', $url);
-                if (!empty($urls)) {
-                    return $urls[1];
-                } else {
-                    return $url;
-                }
+                $url = self::explodeUrl($url);
                 break;
-
+            case SearchEngineEnum::PC_SOU_GOU:
+                $url = self::explodeUrl($url);
+                break;
         }
 
+        return $url;
     }
 
     /**
@@ -320,6 +315,19 @@ class MatchUrlAndGetRank
         $last = substr($url, -1, 1);
         if ($last == '/') {
             $url = substr($url, 0, -1);
+        }
+        return $url;
+    }
+
+    /**
+     * @param $url
+     * @return mixed
+     */
+    private static function explodeUrl($url)
+    {
+        $urls = explode('://', $url);
+        if (!empty($urls)) {
+            return $urls[1];
         }
         return $url;
     }
