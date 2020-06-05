@@ -12,7 +12,8 @@
 README: [中文](https://github.com/TIM168/search-engine-rank/blob/master/README.md "中文")/[English](https://github.com/TIM168/search-engine-rank/blob/master/README-en.md "English")
 
 ## 前言
-#### 仅供学习交流，没设置代理ip的情况下，谨慎使用！
+#### 仅供学习交流，切勿商用！
+#### 未设置代理ip的情况下，请谨慎使用！
 
 ## 安装
 
