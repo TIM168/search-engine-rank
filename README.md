@@ -2,14 +2,17 @@
 
 <p align="center"> 根据关键词获取网站在各大搜索引擎的排名情况</p>
 
-[![Build Status](https://travis-ci.org/TIM168/Ip.svg?branch=master)](https://travis-ci.org/TIM168/Ip)
-[![Latest Stable Version](https://poser.pugx.org/tim168/ip/v/stable)](https://packagist.org/packages/tim168/ip)
-[![License](https://poser.pugx.org/tim168/ip/license)](https://packagist.org/packages/tim168/ip)
-[![Latest Unstable Version](https://poser.pugx.org/tim168/ip/v/unstable)](https://packagist.org/packages/tim168/ip)
-[![Total Downloads](https://poser.pugx.org/tim168/ip/downloads)](https://packagist.org/packages/tim168/ip)
-[![composer.lock](https://poser.pugx.org/tim168/ip/composerlock)](https://packagist.org/packages/tim168/ip)
+[![Build Status](https://travis-ci.org/TIM168/search-engine-rank.svg?branch=master)](https://travis-ci.org/TIM168/search-engine-rank)
+[![Latest Stable Version](https://poser.pugx.org/tim168/search-engine-rank/v/stable)](https://packagist.org/packages/tim168/search-engine-rank)
+[![License](https://poser.pugx.org/tim168/search-engine-rank/license)](https://packagist.org/packages/tim168/search-engine-rank)
+[![Latest Unstable Version](https://poser.pugx.org/tim168/search-engine-rank/v/unstable)](https://packagist.org/packages/tim168/search-engine-rank)
+[![Total Downloads](https://poser.pugx.org/tim168/search-engine-rank/downloads)](https://packagist.org/packages/tim168/search-engine-rank)
+[![composer.lock](https://poser.pugx.org/tim168/search-engine-rank/composerlock)](https://packagist.org/packages/tim168/search-engine-rank)
 
-README: [中文](https://github.com/TIM168/Ip/blob/master/README.md "中文")/[English](https://github.com/TIM168/Ip/blob/master/README-en.md "English")
+README: [中文](https://github.com/TIM168/search-engine-rank/blob/master/README.md "中文")/[English](https://github.com/TIM168/search-engine-rank/blob/master/README-en.md "English")
+
+## 前言
+#### 仅供学习交流，没设置代理ip的情况下，谨慎使用！
 
 ## 安装
 
@@ -22,84 +25,37 @@ $ composer require tim168/search-engine-rank
 
     use Tim168\SearchEngineRank\SearchEngineRank;
 	
+	//关键字
     $keyword = '华为';
     
+	//查询的页码
     $page = 1;
     
+	//查询的网址
     $url = 'https://www.huawei.com/';
-## 支持的语言格式
-|  字符集| 描述  |
-| :------------ | :------------ |
-| en | 英语  |
-| de  | 德语  |
-| es  | 西班牙语  |
-| pt-BR  | 葡语  |
-| fr  | 法语  |
-| ja | 日语  |
-| zh-CN  | 中文  |
-| ru  | 俄语  |
-## 获取Ip定位信息
-    $res = $ip->get('json','116.234.222.36')
 	
-## 示例
-	{
-    	"status": "success", //状态success或fail
-    	"country": "中国",   //国家
-    	"countryCode": "CN", //国家代码
-    	"region": "SH",      //省份简称
-    	"regionName": "上海",//省份
-    	"city": "上海",	   //城市
-    	"zip": "",           //邮编
-    	"lat": 31.0449,      //纬度
-    	"lon": 121.4012,	 //经度
-    	"timezone": "Asia/Shanghai", //时区
-    	"isp": "China Telecom (Group)", //运营商
-    	"org": "Chinanet SH",  //组织
-    	"as": "AS4812 China Telecom (Group)", //BGP机房
-    	"query": "116.234.222.36" //ip
-	}
-## 获取XML格式
-    $res = $ip->get('xml','116.234.222.36')
-## 示例
-    <?xml version="1.0" encoding="UTF-8"?>
-    <query>
-    	<status>success</status>
-    	<country>中国</country>
-    	<countryCode>CN</countryCode>
-    	<region>SH</region>
-    	<regionName>上海</regionName>
-    	<city>上海</city>
-    	<zip></zip>
-    	<lat>31.0449</lat>
-    	<lon>121.4012</lon>
-    	<timezone>Asia/Shanghai</timezone>
-    	<isp>China Telecom (Group)</isp>
-    	<org>Chinanet SH</org>
-    	<as>AS4812 China Telecom (Group)</as>
-    	<query>116.234.222.36</query>
-    </query>
-## 获取CSV格式
-    $res = $ip->get('csv','116.234.222.36')
-## 示例
-	success,中国,CN,SH,上海,上海,,31.0449,121.4012,Asia/Shanghai,China Telecom (Group),Chinanet SH,AS4812 China Telecom
-    (Group),116.234.222.36
-## 获取序列化格式
-    $res = $ip->get('php','116.234.222.36')
-## 示例
-    a:14:{s:6:"status";s:7:"success";s:7:"country";s:6:"中国";s:11:"countryCode";s:2:"CN";s:6:"region";s:2:"SH";s:10:"regionName";s:6:"上海";s:4:"city";s:6:"上海";s:3:"zip";s:0:"";s:3:"lat";d:31.0449;s:3:"lon";d:121.4012;s:8:"timezone";s:13:"Asia/Shanghai";s:3:"isp";s:21:"China
-    Telecom (Group)";s:3:"org";s:11:"Chinanet SH";s:2:"as";s:28:"AS4812 China Telecom
-    (Group)";s:5:"query";s:14:"116.234.222.36";}
-## IpV4转换成IpV6
-	$res = $ip->IpV4toV6('116.234.222.36')
+	//代理ip（若不设置，默认用本地ip）
+	$proxy = "112.245.21.58:548";
 	
-## 示例
-	0000:0000:0000:0000:0000:ffff:74ea:de24
+	//超时时间
+	$timeout = 5；
+	
+	$rank = SearchEngineRank::getRank(\Tim168\SearchEngineRank\Enum\SearchEngineEnum::PC_360, $keyword, $page, $proxy, $url,$timeout);
+	
+	//返回排名数组
+	return $rank;
+	
+## 目前支持的搜索引擎
+|  名称| 标示  | 备注  |
+| :------------ | :------------ |:------------ |
+| 百度 | SearchEngineEnum::PC_BAI_DU  |pc-bai-du  |
+| 移动百度  | SearchEngineEnum::M_BAI_DU  |m-bai-du  |
+| 360  | SearchEngineEnum::PC_360  |pc-360  |
+| 搜狗  | SearchEngineEnum::PC_SOU_GOU  |pc-sou-gou  |
 
-## IpV6转换成IpV4
-	$res = $ip->IpV6toV4('0000:0000:0000:0000:0000:ffff:74ea:de24')
-	
-## 示例
-	116.234.222.36
+## 搜索原理
+
+
 ## License
 **MIT**
 
