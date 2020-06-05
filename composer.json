@@ -10,7 +10,8 @@
     ],
     "require": {
         "symfony/dom-crawler": "^5.1",
-        "jaeger/querylist": "^4.2"
+        "jaeger/querylist": "^4.2",
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": {
