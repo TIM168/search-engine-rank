@@ -2,8 +2,6 @@
 
 <p align="center"> 根据关键词获取网站在各大搜索引擎的排名情况</p>
 
-[![Build Status](https://travis-ci.org/TIM168/search-engine-rank.svg?branch=master)](https://travis-ci.org/TIM168/search-engine-rank)
-
 [![Latest Stable Version](https://poser.pugx.org/tim168/search-engine-rank/v/stable)](https://packagist.org/packages/tim168/search-engine-rank)
 [![License](https://poser.pugx.org/tim168/search-engine-rank/license)](https://packagist.org/packages/tim168/search-engine-rank)
 [![Latest Unstable Version](https://poser.pugx.org/tim168/search-engine-rank/v/unstable)](https://packagist.org/packages/tim168/search-engine-rank)
