@@ -5,7 +5,6 @@
 [![Latest Stable Version](https://poser.pugx.org/tim168/search-engine-rank/v/stable)](https://packagist.org/packages/tim168/search-engine-rank)
 [![License](https://poser.pugx.org/tim168/search-engine-rank/license)](https://packagist.org/packages/tim168/search-engine-rank)
 [![Latest Unstable Version](https://poser.pugx.org/tim168/search-engine-rank/v/unstable)](https://packagist.org/packages/tim168/search-engine-rank)
-[![Total Downloads](https://poser.pugx.org/tim168/search-engine-rank/downloads)](https://packagist.org/packages/tim168/search-engine-rank)
 [![composer.lock](https://poser.pugx.org/tim168/search-engine-rank/composerlock)](https://packagist.org/packages/tim168/search-engine-rank)
 <a href="https://www.php.net/"><img src="https://img.shields.io/badge/php-%3E%3D7.2-blue"></a>
 
